@@ -40,7 +40,7 @@
 				    <div class="card-body">
 				      <h4 class="card-title">Consultores</h4>
 				      <p class="card-text">Profissionais que irão ajudar a sua empresa a economizar.</p>
-				      <a href="consultores.php" class="btn btn-primary btn-card">saiba mais</a>
+				      <a href="consultores" class="btn btn-primary btn-card <?php echo basename($_SERVER['PHP_SELF']) == 'consultores.php' ? ' nav-active' : ''; ?>">saiba mais</a>
 				    </div>				    
 				  </div>
 				  <div class="card">
@@ -48,7 +48,7 @@
 				    <div class="card-body">
 				      <h4 class="card-title">Serviços</h4>
 				      <p class="card-text">Conheça os nossos serviços que irão auxiliar você e sua empresa.</p>
-				      <a href="servicos.php" class="btn btn-primary btn-card">saiba mais</a>
+				      <a href="servicos" class="btn btn-primary btn-card <?php echo basename($_SERVER['PHP_SELF']) == 'servicos.php' ? ' nav-active' : ''; ?>">saiba mais</a>
 				    </div>				    
 				  </div>
 				  <div class="card">
@@ -56,7 +56,7 @@
 				    <div class="card-body">
 				      <h4 class="card-title">Você Sabia?</h4>
 				      <p class="card-text">Confira as dicas mais importantes para sua empresa economizar.</p>
-				      <a href="sabia.php" class="btn btn-primary btn-card">saiba mais</a>
+				      <a href="sabia" class="btn btn-primary btn-card <?php echo basename($_SERVER['PHP_SELF']) == 'sabia.php' ? ' nav-active' : ''; ?>">saiba mais</a>
 				    </div>				    
 				  </div>
 				</div>

@@ -3,11 +3,11 @@
 			<div class="col-sm-3">
 				<h4 class="footer-title">O que fazemos</h4>
 				<nav class="nav flex-column footer-menu">
-				  <a class="nav-link nav-footer active" href="quem-somos.php">Quem Somos</a>
-				  <a class="nav-link nav-footer" href="consultores.php">Consultores</a>
-				  <a class="nav-link nav-footer" href="servicos.php">Serviços</a>
-				  <a class="nav-link nav-footer" href="treinamentos.php">Treinamentos</a>
-				  <a class="nav-link nav-footer" href="contato.php">Contato</a>
+				  <a class="nav-link nav-footer active<?php echo basename($_SERVER['PHP_SELF']) == 'quem-somos.php' ? ' nav-active' : ''; ?>" href="quem-somos">Quem Somos</a>
+				  <a class="nav-link nav-footer <?php echo basename($_SERVER['PHP_SELF']) == 'consultores.php' ? ' nav-active' : ''; ?>" href="consultores">Consultores</a>
+				  <a class="nav-link nav-footer <?php echo basename($_SERVER['PHP_SELF']) == 'servicos.php' ? ' nav-active' : ''; ?>" href="servicos">Serviços</a>
+				  <a class="nav-link nav-footer <?php echo basename($_SERVER['PHP_SELF']) == 'treinamentos.php' ? ' nav-active' : ''; ?>" href="treinamentos">Treinamentos</a>
+				  <a class="nav-link nav-footer <?php echo basename($_SERVER['PHP_SELF']) == 'contato.php' ? ' nav-active' : ''; ?>" href="contato">Contato</a>
 				</nav>
 			</div>
 			<div class="col-sm-5">
@@ -22,9 +22,9 @@
 			<div class="col-sm-4">
 				<h4 class="footer-title">SM Energia</h4>
 				<nav class="nav flex-column footer-menu">
-				  <a class="nav-link nav-footer active" href="parceiros.php">Nossos Parceiros</a>
-				  <a class="nav-link nav-footer" href="clientes.php">Nossos Clientes</a>
-				  <a class="nav-link nav-footer" href="missao.php">Missão - Visão - Valores</a>				  
+				  <a class="nav-link nav-footer active <?php echo basename($_SERVER['PHP_SELF']) == 'parceiros.php' ? ' nav-active' : ''; ?>" href="parceiros">Nossos Parceiros</a>
+				  <a class="nav-link nav-footer <?php echo basename($_SERVER['PHP_SELF']) == 'clientes.php' ? ' nav-active' : ''; ?>" href="clientes">Nossos Clientes</a>
+				  <a class="nav-link nav-footer <?php echo basename($_SERVER['PHP_SELF']) == 'missao.php' ? ' nav-active' : ''; ?>" href="missao">Missão - Visão - Valores</a>				  
 				</nav>	
 				<a href="#" class="social"><img class="facebook" src="img/facebook.png"> <strong> SM energia</strong></a>			
 			</div>			

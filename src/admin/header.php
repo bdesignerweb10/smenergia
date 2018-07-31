@@ -1,9 +1,9 @@
 <?php
 	require_once("../acts/connect.php");
 	
-	if (!isset($_SESSION["usu_id"]) || empty($_SESSION["usu_id"]) || 
+	/*if (!isset($_SESSION["usu_id"]) || empty($_SESSION["usu_id"]) || 
 	!isset($_SESSION['usu_nivel']) || empty($_SESSION["usu_nivel"]) ||
-	$_SESSION['usu_nivel'] == "3" || $_SESSION["usu_id"] == "0") header('Location: ./');
+	$_SESSION['usu_nivel'] == "3" || $_SESSION["usu_id"] == "0") header('Location: ./');*/
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,68 +38,59 @@
 	<nav>
 		<div class="sidebar">
 			<div class="sidebar-header">
-				<img src="../img/logo.png" alt="Logo Cartola">
+				<img src="../img/logo-sm-65.png" alt="Logo smenergia">
 			</div><!-- sidebar-header -->
 
 			<ul class="nav">
 				<li class="nav-item">					
 					<a href="home" class="nav-link<?php echo basename($_SERVER['PHP_SELF']) == 'home.php' ? ' nav-active' : ''; ?>">
 					<i class="fa fa-home"></i>	
-					Home
+					Incio
 					</a>
 				</li>
 				<li class="nav-item">					
-					<a href="temporadas" class="nav-link<?php echo basename($_SERVER['PHP_SELF']) == 'temporadas.php' ? ' nav-active' : ''; ?>">
-					<i class="fa fa-calendar"></i>	
-					Temporadas
-					</a>
-				</li>
-				<?php if($_SESSION['usu_nivel'] == "1") : ?>
-					<li class="nav-item">					
-						<a href="times_temporadas" class="nav-link<?php echo basename($_SERVER['PHP_SELF']) == 'times_temporadas.php' ? ' nav-active' : ''; ?>">
-						<i class="fa fa-list-ol"></i>	
-						Ativar Inscrição
-						</a>
-					</li>
-					<li class="nav-item">					
-						<a href="gerenciar_times" class="nav-link<?php echo basename($_SERVER['PHP_SELF']) == 'gerenciar_times.php' ? ' nav-active' : ''; ?>">
-						<i class="fa fa-soccer-ball-o"></i>	
-						Gerenciar Times
-						</a>
-					</li>
-				<?php endif; ?>
-				<li class="nav-item">					
-					<a href="pontuacoes" class="nav-link<?php echo basename($_SERVER['PHP_SELF']) == 'pontuacoes.php' ? ' nav-active' : ''; ?>">
-					<i class="fa fa-calculator"></i>	
-					Pontuação
+					<a href="quem-somos" class="nav-link<?php echo basename($_SERVER['PHP_SELF']) == 'quem-somos' ? ' nav-active' : ''; ?>">
+					<i class="fa fa-black-tie"></i>	
+					Quem Somos
 					</a>
 				</li>
 				<li class="nav-item">					
-					<a href="mata_mata" class="nav-link<?php echo basename($_SERVER['PHP_SELF']) == 'mata_mata.php' ? ' nav-active' : ''; ?>">
-					<i class="fa fa-fire"></i>	
-					Mata-mata
+					<a href="consultores" class="nav-link<?php echo basename($_SERVER['PHP_SELF']) == 'consultores.php' ? ' nav-active' : ''; ?>">
+						<i class="fa fa-address-card"></i>
+						Consultores
 					</a>
 				</li>
 				<li class="nav-item">					
-					<a href="eventos" class="nav-link<?php echo basename($_SERVER['PHP_SELF']) == 'eventos.php' ? ' nav-active' : ''; ?>">
-					<i class="fa fa-beer"></i>	
-					Eventos
+					<a href="servicos" class="nav-link<?php echo basename($_SERVER['PHP_SELF']) == 'servicos.php' ? ' nav-active' : ''; ?>">
+						<i class="fa fa-clipboard"></i>	
+					Serviços
 					</a>
 				</li>
-				<?php if($_SESSION['usu_nivel'] == "1") : ?>
-					<li class="nav-item">					
-						<a href="usuarios" class="nav-link<?php echo basename($_SERVER['PHP_SELF']) == 'usuarios.php' ? ' nav-active' : ''; ?>">
-						<i class="fa fa-user"></i>	
-						Usuários
-						</a>
-					</li>
-					<li class="nav-item">					
-						<a href="configuracoes" class="nav-link<?php echo basename($_SERVER['PHP_SELF']) == 'configuracoes.php' ? ' nav-active' : ''; ?>">
-						<i class="fa fa-cogs"></i>	
-						Configurações
-						</a>
-					</li>
-				<?php endif; ?>
+				
+				<li class="nav-item">					
+					<a href="treinamentos" class="nav-link<?php echo basename($_SERVER['PHP_SELF']) == 'treinamentos.php' ? ' nav-active' : ''; ?>">
+					<i class="fa fa-bullhorn"></i>	
+					Treinametos
+					</a>
+				</li>
+				<li class="nav-item">					
+					<a href="clientes-parceiros" class="nav-link<?php echo basename($_SERVER['PHP_SELF']) == 'clientes-parceiros.php' ? ' nav-active' : ''; ?>">
+					<i class="fa fa-users"></i>	
+					Clientes | Parceiros
+					</a>
+				</li>
+				<li class="nav-item">					
+					<a href="missao" class="nav-link<?php echo basename($_SERVER['PHP_SELF']) == 'missao.php' ? ' nav-active' : ''; ?>">
+					<i class="fa fa-building"></i>	
+					Missão | Visão
+					</a>
+				</li>
+				<li class="nav-item">					
+					<a href="sabia" class="nav-link<?php echo basename($_SERVER['PHP_SELF']) == 'sabia.php' ? ' nav-active' : ''; ?>">
+						<i class="fa fa-info"></i>	
+					Você Sabia?
+					</a>
+				</li>
 			</ul>
 		</div><!-- sidebar -->
 	</nav>

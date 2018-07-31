@@ -1,6 +1,11 @@
 @import "../components/bootstrap/scss/bootstrap";
 @import "../components/components-font-awesome/scss/font-awesome";
 
+/* sidebar */
+@import "sidebar";
+
+/* Header */
+@import "header";
 
 .topo{
 	background-color: #000053;
@@ -416,4 +421,12 @@ a:focus, a:hover {
     color: #000;
     border-radius: 0;
     font-size: 12px;
+}
+
+.headline {
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 15px 20px;
+    margin-top: 80px;
+    margin-left: 100px;
 }

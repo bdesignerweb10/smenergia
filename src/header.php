@@ -40,7 +40,7 @@
 	<div class="container-fluid">
 		<div class="row topo">
 			<div class="col-sm-5 logo">
-				<a href="index.php"><img src="img/logo-sm.png" class="img-fluid"></a>
+				<a href="./" class="<?php echo basename($_SERVER['PHP_SELF']) == 'index.php' ? ' nav-active' : ''; ?>"><img src="img/logo-sm.png" class="img-fluid"></a>
 			</div>
 			<div class="col-sm-7">				
 				<nav class="navbar navbar-toggleable-md navbar-light menu">
@@ -52,19 +52,19 @@
 				  <div class="collapse navbar-collapse" id="navbarSupportedContent">
 				    <ul class="navbar-nav mr-auto">
 				      <li class="nav-item">
-				        <a class="nav-link" href="index.php">Inicio <span class="sr-only">(current)</span></a>
+				        <a class="nav-link<?php echo basename($_SERVER['PHP_SELF']) == 'index.php' ? ' nav-active' : ''; ?>" href="./">Inicio <span class="sr-only">(current)</span></a>
 				      </li>
 				      <li class="nav-item">
-				        <a class="nav-link" href="quem-somos.php">Quem Somos</a>
+				        <a class="nav-link<?php echo basename($_SERVER['PHP_SELF']) == 'quem-somos.php' ? ' nav-active' : ''; ?>" href="quem-somos">Quem Somos</a>
 				      </li>
 				      <li class="nav-item">
-				        <a class="nav-link" href="consultores.php">Consultores</a>
+				        <a class="nav-link<?php echo basename($_SERVER['PHP_SELF']) == 'consultores.php' ? ' nav-active' : ''; ?>" href="consultores">Consultores</a>
 				      </li>
 				      <li class="nav-item">
-				        <a class="nav-link" href="servicos.php">Serviços</a>
+				        <a class="nav-link<?php echo basename($_SERVER['PHP_SELF']) == 'servicos.php' ? ' nav-active' : ''; ?>" href="servicos">Serviços</a>
 				      </li>
 				      <li class="nav-item">
-				        <a class="nav-link" href="contato.php">Contato</a>
+				        <a class="nav-link<?php echo basename($_SERVER['PHP_SELF']) == 'contato.php' ? ' nav-active' : ''; ?>" href="contato">Contato</a>
 				      </li>
 				    </ul>				    
 				  </div>

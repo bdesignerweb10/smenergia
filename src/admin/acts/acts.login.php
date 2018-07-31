@@ -46,7 +46,7 @@ if(isset($_GET['act']) && !empty($_GET['act'])) {
 									$usu_senha = $usuario->senha;
 									$usu_nivel = $usuario->nivel;
 								}
-
+								
 								$usu_nome = $usu_login;
 
 								$_SESSION["usu_id"] = $usu_id;
@@ -54,7 +54,7 @@ if(isset($_GET['act']) && !empty($_GET['act'])) {
 								$_SESSION["usu_nome"] = $usu_nome;
 								$_SESSION["usu_nivel"] = $usu_nivel;								
 
-								if(isset($_SESSION["usu_id"]) && !empty($_SESSION["usu_id"]) && 
+								/*if(isset($_SESSION["usu_id"]) && !empty($_SESSION["usu_id"]) && 
 								   isset($_SESSION["usu_login"]) && !empty($_SESSION["usu_login"]) && 
 								   isset($_SESSION["usu_nivel"]) && !empty($_SESSION["usu_nivel"])) {
 									echo '{"succeed": true, "href": "' . $href . '"}';
@@ -73,11 +73,11 @@ if(isset($_GET['act']) && !empty($_GET['act'])) {
 									}
 
 									exit();
-								}
+								}*/
 								else {
 									echo '{"succeed": false, "errno": 12009, "title": "Erro ao salvar sessão!", "erro": "Não foi possível salvar dados necessários para o sistema funcionar na sessão!"}';
 									exit();
-								}
+								}								
 						    }
 						}
 					} catch(Exception $e) {
@@ -97,3 +97,5 @@ if(isset($_GET['act']) && !empty($_GET['act'])) {
 	echo '{"succeed": false, "errno": 12018, "title": "Ação não definida!", "erro": "Não foi definida a ação para a requisição. Favor contatar o administrador da página!"}';
 }
 ?>
+
+
