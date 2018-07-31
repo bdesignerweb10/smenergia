@@ -1,0 +1,6 @@
+RewriteEngine On
+
+RewriteRule ^admin/home/?$ admin/home.php
+RewriteRule ^admin/?$ admin/index.php
+RewriteRule ^admin/logout/?$ admin/logout.php
+RewriteRule ^admin/usuarios/?$ admin/usuarios.php

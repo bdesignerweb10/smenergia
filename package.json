@@ -1,0 +1,37 @@
+{
+  "name": "smenergia",
+  "version": "1.0.0",
+  "description": "Website do smenergia",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bdesignerweb10/smenergia.git"
+  },
+  "keywords": [
+    "smenergia",
+    "energia",
+    "economia"
+  ],
+  "author": "Bruno Gomes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bdesignerweb10/smenergia/issues"
+  },
+  "homepage": "https://github.com/bdesignerweb10/smenergia#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1"
+  },
+  "dependencies": {
+    "browser-sync": "^2.24.6",
+    "del": "^3.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-htmlmin": "^4.0.0",
+    "gulp-notify": "^3.2.0",
+    "gulp-php-minify": "^0.1.3",
+    "gulp-sass": "^4.0.1",
+    "gulp-uglify": "^3.0.1"
+  }
+}
