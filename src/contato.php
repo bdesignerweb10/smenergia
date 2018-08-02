@@ -11,23 +11,23 @@
 						<div class="row">
 							<div class="col-xs-12 col-sm-12 col-md-12">
 								<div class="form-group">
-			                        <input type="text" name="nome" id="nome" class="form-control input-lg" placeholder="Nome" tabindex="1">
+			                        <input type="text" name="nome" id="nome" class="form-control input-lg" placeholder="Nome" tabindex="1" aria-describedby="nome" placeholder="Digite seu nome..." data-error="Por favor, informe o nome." maxlength="120" required>
 								</div>
 							</div>
 							<div class="col-xs-12 col-sm-12 col-md-12">
 								<div class="form-group">
-									<input type="email" name="email" id="email" class="form-control input-lg" placeholder="E-mail" tabindex="2">
+									<input type="email" name="email" id="email" class="form-control input-lg" placeholder="E-mail" tabindex="2" aria-describedby="email" placeholder="Digite seu e-mail..." data-error="Por favor, informe o e-mail." maxlength="120" required>
 								</div>
 							</div>
 						</div>
 						<div class="form-group">
-							<input type="text" name="assunto" id="assunto" class="form-control input-lg" placeholder="Assunto" tabindex="3">
+							<input type="text" name="assunto" id="assunto" class="form-control input-lg" placeholder="Assunto" tabindex="3" aria-describedby="assunto" placeholder="Digite o assunto..." data-error="Por favor, informe o assunto." maxlength="120" required>
 						</div>
 						
 						<div class="row">
 							<div class="col-xs-12 col-sm-12 col-md-12">
 								<div class="form-group">
-									<textarea class="form-control" id="mensagem" name="mensagem" rows="3" tabindex="4"></textarea>
+									<textarea class="form-control" id="mensagem" name="mensagem" rows="3" tabindex="4" aria-describedby="mensagem" placeholder="Digite sua mensagem..." data-error="Por favor, informe a mensagem." required></textarea>
 								</div>
 							</div>						
 						</div>	

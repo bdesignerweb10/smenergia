@@ -12,7 +12,7 @@ require_once('header_login.php');
 		  			<div class="form-group">		    			
 						<label for="login">Usuário</label>
 		    			<input type="text" class="form-control form-control-md" id="login" name="login" aria-describedby="login" placeholder="Digite seu usuário..." data-error="Por favor, informe o login." maxlength="120" required>
-		    			<div class="help-block with-errors"></div>
+		    			<div class="help-block with-errors">
 		    		</div>
 					<div class="form-group">
 						<label for="senha">Senha</label>

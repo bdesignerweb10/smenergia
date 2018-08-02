@@ -136,6 +136,21 @@ gulp.task("minify-php-adm", () => gulp.src('src/admin/acts/*.php', {read: false}
 				.pipe(browserSync.stream());
 });
 
+/* Compila SCSS para CSS e Minifica e envia para dist/admin/css */
+gulp.task("sass-adm", ['cache:css'], function() {
+	return gulp.src("./src/admin/scss/style.scss")
+				.pipe(sass({outPutStyle: 'compressed'}))
+				.on('error', notify.onError({title: "erro scss", message: "<%= error.message %>"}))
+				.pipe(gulp.dest("./dist/admin/css"))
+				.pipe(browserSync.stream());
+});
+
+ /* move a pasta fonts para pasta dist/fonts */
+ gulp.task("move-fonts-adm", function() { 
+ 	return gulp.src('./src/components/components-font-awesome/fonts/**') 
+ 	.pipe(gulp.dest('./dist/admin/fonts'))
+ });
+
  /* SERVIDOR LOCALHOST */
 
  /* Servidor local na pasta dist/ */
@@ -156,9 +171,10 @@ gulp.task("server", function() {
 	gulp.watch("./src/acts/*.php", ['acts']);
 	gulp.watch("./src/css/*.css", ['css']);
 	gulp.watch("./src/admin/*.php", ['minify-html-adm']);
-	gulp.watch("./src/admin/acts/*.php", ['minify-php-adm']);		
+	gulp.watch("./src/admin/acts/*.php", ['minify-php-adm']);
+	gulp.watch("./src/admin/scss/*.scss", ['sass-adm']);		
 	gulp.watch("./src/js/**/*.js", ['move-js']);
 });
 
 /* Inicia todas as tasks do gulp */
-gulp.task("default", ["move-htaccess", "sass", "css", "js", "minify-html" ,"minify-php", "move-js", "move-fonts", "move-libs", "acts", "move-img", "concat-js", "minify-html-adm" ,"minify-php-adm" ,"admin-js" ,"server"]);
+gulp.task("default", ["move-htaccess", "sass", "css", "js", "minify-html" ,"minify-php", "move-js", "move-fonts", "move-libs", "acts", "move-img", "concat-js", "move-fonts-adm" ,"minify-html-adm", "sass-adm" ,"minify-php-adm" ,"admin-js" ,"server"]);

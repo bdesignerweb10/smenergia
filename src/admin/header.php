@@ -30,7 +30,7 @@
 	<meta name="msapplication-config" content="../img/browserconfig.xml">
 	<meta name="theme-color" content="#ffffff">
 	
-	<link rel="stylesheet" type="text/css" href="../css/style.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap-toggle.min.css">
 	<link rel="stylesheet" type="text/css" href="../css/jquery.datetimepicker.css">
 </head>

@@ -11,7 +11,14 @@ RewriteRule ^parceiros/?$ parceiros.php
 RewriteRule ^clientes/?$ clientes.php
 RewriteRule ^missao/?$ missao.php
 
-RewriteRule ^admin/home/?$ admin/home.php
 RewriteRule ^admin/?$ admin/index.php
+RewriteRule ^admin/home/?$ admin/home.php
+RewriteRule ^admin/quem-somos/?$ admin/quem-somos.php
+RewriteRule ^admin/consultores/?$ admin/consultores.php
+RewriteRule ^admin/servicos/?$ admin/servicos.php
+RewriteRule ^admin/treinamentos/?$ admin/treinamentos.php
+RewriteRule ^admin/clientes-parceiros/?$ admin/clientes-parceiros.php
+RewriteRule ^admin/missao/?$ admin/missao.php
+RewriteRule ^admin/sabia/?$ admin/sabia.php
 RewriteRule ^admin/logout/?$ admin/logout.php
-RewriteRule ^admin/usuarios/?$ admin/usuarios.php
+
