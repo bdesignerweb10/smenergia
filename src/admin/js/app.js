@@ -1,3 +1,49 @@
+// BEGIN LOGOUT (logout.php)
+
+$("#logout").on("click", function(e) {
+		e.preventDefault();
+
+		$('#loading-modal').modal({
+			keyboard: false
+		});
+
+		$.ajax({
+			type: "POST",
+			url: "acts/acts.logout.php",
+			success: function(data)
+			{
+			    try {
+					$('#loading-modal').modal('hide');
+
+					var retorno = JSON.parse(data.replace(/(\r\n|\n|\r)/gm," ").replace(/\s+/g," "));
+
+					if(retorno.succeed) {
+						document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+						window.location.href = "./";
+					}
+					else {
+						$('#alert-title').html(retorno.title);
+						$('#alert-content').html(retorno.errno + " - " + retorno.erro);
+						$('#alert').modal('show');
+
+						if(retorno.errno == "12010") {
+							$('#alert').on('hidden.bs.modal', function (e) {
+								window.location.href = 'provisoria';
+							});
+						}
+					}
+			    }
+			    catch (e) {
+					$('#loading-modal').modal('hide');
+					$('#alert-title').html("Erro ao fazer parse do JSON!");
+					$('#alert-content').html(String(e.stack));
+					$('#alert').modal('show');
+			    };
+			}
+		});
+	});
+// END BEGIN LOGOUT (logout.php)
+
 // BEGIN LOGIN (login.php)
 
 	$("#form-login").submit(function(e) {
@@ -25,11 +71,11 @@
 						$('#alert-content').html(retorno.errno + " - " + retorno.erro);
 						$('#alert').modal('show');
 
-						if(retorno.errno == "21010") {
+						/*if(retorno.errno == "21010") {
 							$('#alert').on('hidden.bs.modal', function (e) {
 								window.location.href = '../provisoria';
 							});
-						}
+						}*/
 					}
 			    } // fecha try
 			    catch (e) {
@@ -42,7 +88,7 @@
 		}); // fecha ajax
 	}); // Fecha #form-login
 
-	/*$('#btn-login').click(function(e) {
+	$('#btn-login').click(function(e) {
 		e.preventDefault();
 
 		$('#loading').modal({
@@ -68,11 +114,11 @@
 						$('#alert-content').html(retorno.errno + " - " + retorno.erro);
 						$('#alert').modal('show');
 
-						if(retorno.errno == "21010") {
+						/*if(retorno.errno == "21010") {
 							$('#alert').on('hidden.bs.modal', function (e) {
 								window.location.href = '../provisoria';
 							});
-						}
+						}*/
 					}
 			    }
 			    catch (e) {
@@ -83,36 +129,162 @@
 			    };
 			}
 		});
-	});*/
-
-	/*$('#btn-esqueceu-senha').click(function(e) {
-		e.preventDefault();
-
-		$('.mainlogin').hide();
-		$('.mainform').show();
 	});
 
-	$('#btn-recuperar-senha').click(function(e) {
+	// END LOGIN (login.php)
+
+	/*GERENCIAR QUEM SOMOS */
+	$('#btn-add-quemsomos').click(function(e) {
+		e.preventDefault();
+
+		$('.maintable').hide();
+		$('.mainform').show();
+
+		$('#btn-salvar-quemsomos').data('id', null);
+    	$('#btn-salvar-quemsomos').data('act', 'add');    	
+
+    	$('#id').val('');
+    	$('#titulo').val('');
+    	$('#descricao').val('');
+    	$('#ativo').bootstrapToggle('off');		
+    });
+
+
+	$('#btn-salvar-quemsomos').click(function(e) {
+    	e.preventDefault();
+
+		$('#loading').modal({
+			keyboard: false
+		});
+
+    	var id = $(this).data('id');
+    	var act = $(this).data('act');
+
+    	if(act == "edit") {
+    		var url = "acts/acts.quemsomos.php?act=" + act + "&id=" + id;
+    	}
+    	else {
+    		var url = "acts/acts.quemsomos.php?act=" + act;
+    	}
+
+		$.ajax({
+			type: "POST",
+			url: url,
+			data: $("#form-quemsomos").serialize(),
+			success: function(data)
+			{
+				console.log('data', data);
+				try {
+					$('#loading').modal('hide');
+
+					var retorno = JSON.parse(data.replace(/(\r\n|\n|\r)/gm," ").replace(/\s+/g," "));
+					if(retorno.succeed) {
+						$('#alert-title').html($('#titulo').val() + (act == 'add' ? " adicionado " : " editado ") + "com sucesso!");
+						$('#alert-content').html("A " + (act == 'add' ? " adição " : " edição ") + " de " + $('#titulo').val() + " foi efetuada com sucesso! Ao fechar esta mensagem a página será recarregada.");
+						$('#alert').modal('show');
+
+						$('#alert').on('hidden.bs.modal', function (e) {
+							window.location.reload();
+						})
+					}
+					else {
+						$('#alert-title').html(retorno.title);
+						$('#alert-content').html(retorno.errno + " - " + retorno.erro);
+						$('#alert').modal('show');
+					}
+			    }
+			    catch (e) {
+					$('#loading').modal('hide');
+					$('#alert-title').html("Erro ao fazer parse do JSON!");
+					$('#alert-content').html(String(e.stack));
+					$('#alert').modal('show');
+			    };
+			}
+		});
+    });
+
+	$('.btn-edit-quemsomos').click(function(e) {
 		e.preventDefault();
 
 		$('#loading').modal({
 			keyboard: false
 		});
 
+    	var id = $(this).data('id');
+
 		$.ajax({
 			type: "POST",
-			url: "acts/acts.login.php?act=reset",
-			data: $("#form-recuperar").serialize(),
-			success: function(data)
+			url: "acts/acts.quemsomos.php?act=showupd&id=" + id,
+			success: function(data)		
 			{
-			    try {
-			        var retorno = JSON.parse(data.replace(/(\r\n|\n|\r)/gm," ").replace(/\s+/g," "));
-			        
+				try {
 					$('#loading').modal('hide');
 
+					var retorno = JSON.parse(data.replace(/(\r\n|\n|\r)/gm," ").replace(/\s+/g," "));
+
 					if(retorno.succeed) {
-						$('#alert-title').html("Solicitação enviada com sucesso!");
-						$('#alert-content').html("Sua requisição para resetar sua senha foi realizada com sucesso. Aguarde o e-mail com as informações! Ao fechar esta mensagem a página será recarregada.");
+						$('.maintable').hide();
+						$('.mainform').show();
+
+				    	$('#btn-salvar-quemsomos').data('act', 'edit');
+				    	$('#btn-salvar-quemsomos').data('id', id);	    				
+
+						//var d = new Date(retorno.dados.data * 1000);
+
+				    	$('#id').val(retorno.dados.id);
+				    	$('#titulo').val(retorno.dados.titulo);				    	
+				    	$('#descricao').val(retorno.dados.descricao);
+				    	//$('#ativo').bootstrapToggle(retorno.dados.ativo == 1 ? 'on' : 'off');				    	
+					}
+					else {
+						$('.mainform').hide();
+						$('.maintable').show();
+
+				    	$('#btn-salvar-quemsomos').data('id', null);
+				    	$('#btn-salvar-quemsomos').data('act', null);				    	
+
+				    	$('#id').val('');
+				    	$('#titulo').val('');				    	
+				    	$('#descricao').val('');
+				    	//$('#ativo').bootstrapToggle('off');				    	
+
+						$('#alert-title').html(retorno.title);
+						$('#alert-content').html(retorno.errno + " - " + retorno.erro);
+						$('#alert').modal('show');
+					}
+			    }
+			    catch (e) {			    	
+					$('#loading').modal('hide');
+					$('#alert-title').html("Erro ao fazer parse do JSON!");
+					$('#alert-content').html(String(e.stack));
+					$('#alert').modal('show');
+			    };
+			}
+		});
+    });
+
+    $('.btn-del-quemsomos').click(function(e) {
+		e.preventDefault();
+
+		$('#loading').modal({
+			keyboard: false
+		});
+
+    	var id = $(this).data('id');
+
+		$.ajax({
+			type: "POST",
+			url: "acts/acts.quemsomos.php?act=del&id=" + id,
+			success: function(data)
+			{
+				try {
+					$('#loading').modal('hide');
+
+					var retorno = JSON.parse(data.replace(/(\r\n|\n|\r)/gm," ").replace(/\s+/g," "));
+
+					if(retorno.succeed) {
+						$('#alert-title').html("Evento removido com sucesso!");
+						$('#alert-content').html("A remoção do evento foi efetuada com sucesso! Ao fechar esta mensagem a página será recarregada.");
 						$('#alert').modal('show');
 
 						$('#alert').on('hidden.bs.modal', function (e) {
@@ -133,9 +305,18 @@
 			    };
 			}
 		});
-	});*/
+    });
 
-	// END LOGIN (login.php)
+	$('#btn-voltar-quemsomos').click(function(e) {
+		e.preventDefault();
+
+		$('.mainform').hide();
+		$('.maintable').show();
+
+    	$('#btn-salvar-quemsomos').data('id', null);
+    	$('#headline-ger-quemsomos').html('');
+		$('.headline-form').html('');
+    });	
 
 
 /*!

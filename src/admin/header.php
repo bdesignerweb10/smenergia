@@ -1,9 +1,9 @@
 <?php
 	require_once("../acts/connect.php");
 	
-	/*if (!isset($_SESSION["usu_id"]) || empty($_SESSION["usu_id"]) || 
+	if (!isset($_SESSION["usu_id"]) || empty($_SESSION["usu_id"]) || 
 	!isset($_SESSION['usu_nivel']) || empty($_SESSION["usu_nivel"]) ||
-	$_SESSION['usu_nivel'] == "3" || $_SESSION["usu_id"] == "0") header('Location: ./');*/
+	$_SESSION['usu_nivel'] == "3" || $_SESSION["usu_id"] == "0") header('Location: ./');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -111,7 +111,7 @@
 					</p>
 				</div><!-- liga -->
 				<div class="liga-logo">
-					<div class="dropdown">
+					<div class="dropdown user">
 						<div class="dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<span class="mark hidden-xs-down"><?php echo $_SESSION["usu_nome"] ?></span>
 							<span class="mark">								

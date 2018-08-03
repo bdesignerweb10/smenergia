@@ -27,24 +27,27 @@
 			    	<tbody>
 			        	<?php if ($quemsomos && $quemsomos->num_rows > 0) {
 						    while($sobrenos = $quemsomos->fetch_object()) {
+						    	$id = $sobrenos->id;
 						?>
 				        	<tr>
       							<th scope="row" class="center"><?php echo $sobrenos->id; ?></th>
       							<th scope="row" class="center"><?php echo $sobrenos->titulo; ?></th>
 						        <td><?php echo nl2br (substr ($sobrenos->descricao, 0, 100)); ?>...</td>
-						        <?php if ($sobrenos->ativ == 0) { 
+						        <?php if ($sobrenos->ativo == 0) { 
 						        		$ativo ='Sim'; 
-						      		} else { $ativo ='Não';
+						      		} else { 
+						      			$ativo ='Não';
 						      	} 
 						      	?>
 						        <td class="center"><?php echo $ativo; ?></td>
 						        <td class='center'>
-									<a href="#" class="btn-edit-quemsomos" alt="Editar Quem Somos" title="Editar dados do Quem Somos">
+									<!--<a href="#" class="btn-edit-quemsomos" alt="Editar Quem Somos" title="Editar dados do Quem Somos">-->
+									<a href="#" class="btn-edit-quemsomos" data-id="<?php echo $id;?>" alt="Editar Quem Somos <?php echo $sobrenos->id; ?>" title="Editar dados do evento <?php echo $sobrenos->id; ?>">
 										<i class="fa fa-edit fa-2x edit"></i>
 									</a>
-									<a href="#" class="btn-del-quemsomos" alt="Remover Quem somos" title="Remover Quem Somos">
+									<a href="#" class="btn-del-quemsomos" data-id="<?php echo $id;?>" alt="Remover evento <?php echo $sobrenos->id; ?>" title="Remover evento <?php echo $sobrenos->id; ?>">
 										<i class="fa fa-trash fa-2x del"></i>
-									</a>
+									</a>									
 								</td>						           
 							</tr>	
 							<?php } ?>			        	
@@ -58,6 +61,52 @@
 			</div><!-- col-sm-8-->
 		</div><!-- row -->
 	</div><!-- container-->
+</main>
+
+<main class="mainform">
+	<div class="container">
+		<h3 class="headline">Gerenciar Quem somos</h3>
+		<button type="button" id="btn-voltar-quemsomos" class="btn btn-link btn-lg form-control btn-voltar">
+			<i class='fa fa-arrow-left'></i>&nbsp;&nbsp;&nbsp;Voltar
+		</button>
+		<form id="form-quemsomos" class="form-panel" data-toggle="validator" action="acts/acts.quemsomos.php" method="POST">
+			<div class="row justify-content-md-center">
+				<div id="box-quemsomos" class="col-sm-12 col-md-10 col-lg-9 col-xl-9 form-box">					
+					<div class="row" style="padding-top: 15px;">
+			  			<div class="col-sm-4 col-md-4 col-lg-2 col-xl-2">		    			
+							<label for="id">ID</label>
+			    			<input type="number" class="form-control form-control-lg" id="id" name="id" aria-describedby="id" maxlength="11" disabled />
+			    		</div>
+			  			<div class="col-sm-8 col-md-8 col-lg-10 col-xl-10">		    			
+							<label for="titulo">Título</label>
+			    			<input type="text" class="form-control form-control-lg" id="titulo" name="titulo" aria-describedby="titulo" placeholder="Informe o título..." data-error="Por favor, informe o título." maxlength="120" required>
+			    			<div class="help-block with-errors"></div>
+			    		</div>
+					</div>
+					<div class="row">
+			  			<div class="col-12">
+						    <label for="descricao">Descrição</label>
+						    <textarea class="form-control form-control-lg" id="descricao" name="descricao" rows="6" placeholder="Informe a descrição..." data-error="Por favor, informe a descrição." required></textarea>
+			    			<div class="help-block with-errors"></div>
+			    		</div>
+					</div>
+					<div class="row" style="margin-top:20px; margin-bottom: 10px;">
+			  			<div class="col-12">
+			  				<div class="checkbox">
+								<label>
+									<input type="checkbox" id="ativo" name="ativo" data-toggle="toggle" data-on="Ativo" data-off="Inativo" data-onstyle="success" data-offstyle="danger">
+									Se o evento está ativo, aparecerá na página quemsomos do site
+								</label>
+							</div>
+			    		</div>
+					</div>
+  					<button type="button" class="btn btn-success btn-lg form-control btn-form" id="btn-salvar-quemsomos">
+  						<i class='fa fa-save'></i> Salvar dados
+  					</button>
+				</div><!-- col-sm-8--> 
+			</div>
+		</form>
+	</div>
 </main>
 <?php 
 	require_once('footer.php'); 

@@ -136,8 +136,12 @@ gulp.task("minify-php-adm", () => gulp.src('src/admin/acts/*.php', {read: false}
 				.pipe(browserSync.stream());
 });
 
+gulp.task("cache:css-adm", function() {
+	del("./dist/admin/css/style.css")
+});
+
 /* Compila SCSS para CSS e Minifica e envia para dist/admin/css */
-gulp.task("sass-adm", ['cache:css'], function() {
+gulp.task("sass-adm", ['cache:css-adm'], function() {
 	return gulp.src("./src/admin/scss/style.scss")
 				.pipe(sass({outPutStyle: 'compressed'}))
 				.on('error', notify.onError({title: "erro scss", message: "<%= error.message %>"}))

@@ -32,7 +32,7 @@ if(isset($_GET['act']) && !empty($_GET['act'])) {
 						$senha = $_POST["senha"];
 						$href = (isset($_POST["href"]) && !empty($_POST["href"])) ? $_POST["href"] : "";
 
-						$usu_qry = $conn->query("SELECT id, usuario, senha, nivel, FROM usuarios WHERE usuario = '" . $login . "'") 
+						$usu_qry = $conn->query("SELECT id, usuario, senha, nivel FROM usuarios WHERE usuario = '" . $login . "'") 
 										or trigger_error("12002 - " . $conn->error);
 
 						if ($usu_qry) { 
@@ -54,7 +54,7 @@ if(isset($_GET['act']) && !empty($_GET['act'])) {
 								$_SESSION["usu_nome"] = $usu_nome;
 								$_SESSION["usu_nivel"] = $usu_nivel;								
 
-								/*if(isset($_SESSION["usu_id"]) && !empty($_SESSION["usu_id"]) && 
+								if(isset($_SESSION["usu_id"]) && !empty($_SESSION["usu_id"]) && 
 								   isset($_SESSION["usu_login"]) && !empty($_SESSION["usu_login"]) && 
 								   isset($_SESSION["usu_nivel"]) && !empty($_SESSION["usu_nivel"])) {
 									echo '{"succeed": true, "href": "' . $href . '"}';
@@ -73,7 +73,7 @@ if(isset($_GET['act']) && !empty($_GET['act'])) {
 									}
 
 									exit();
-								}*/
+								}
 								else {
 									echo '{"succeed": false, "errno": 12009, "title": "Erro ao salvar sessão!", "erro": "Não foi possível salvar dados necessários para o sistema funcionar na sessão!"}';
 									exit();

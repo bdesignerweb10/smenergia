@@ -8424,6 +8424,12 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
     .header .offcanvas {
       display: none; } }
 
+.user {
+  position: fixed; }
+
+body {
+  background-color: #efefef; }
+
 .login-box {
   border: 1px solid #cecece;
   -webkit-border-radius: 3px;
@@ -8461,7 +8467,6 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
   -webkit-box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.15);
   -moz-box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.15);
   box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.15);
-  margin-top: 2%;
   padding: 0px !important;
   background-color: white;
   padding-left: 30px !important;
@@ -8514,9 +8519,8 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
 .bigcolumn {
   width: 40%; }
 
-.headline-form {
-  margin-top: 20px;
-  margin-bottom: 20px; }
+.form-panel {
+  margin-bottom: 30px; }
 
 .btn-link {
   cursor: pointer; }
@@ -8524,10 +8528,17 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
 #box-rodada, #box-confirmacao, .mainform, .check-duplicated, .maintemporada, .mainadd, #box-confrontos, #box-times {
   display: none; }
 
+.btn-link:focus, .btn-link:hover {
+  color: #000;
+  text-decoration: none; }
+
 .btn-voltar {
   text-align: left;
-  padding: 0px;
-  margin-bottom: 20px; }
+  padding-left: 120px;
+  color: #000; }
+
+.btn-form {
+  margin-top: 20px; }
 
 .btn-esqueceu {
   font-weight: normal;
