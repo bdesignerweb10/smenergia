@@ -10,7 +10,7 @@
 					  	while($consultor = $consultores->fetch_object()) {													
 				 ?>			
 			<div class="col-sm-2">
-				<img src="img/<?php echo $consultor->img; ?>" class="rounded img-consultores img-fluid">
+				<img src="img/consultores/<?php echo $consultor->img; ?>" class="rounded img-consultores img-fluid">
 			</div>
 			<div class="col-sm-9">
 				<h3 class="title"><?php echo $consultor->nome; ?></h3>				
