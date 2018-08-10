@@ -68,7 +68,7 @@
 		<button type="button" id="btn-voltar-consultores" class="btn btn-link btn-lg form-control btn-voltar">
 			<i class='fa fa-arrow-left'></i>&nbsp;&nbsp;&nbsp;Voltar
 		</button>
-		<form id="form-consultores" class="form-panel" data-toggle="validator" action="acts/acts.consultores.php" enctype="multipart/form-data" method="POST">
+		<form id="form-consultores" class="form-panel" data-toggle="validator" action="acts/acts.consultores.php" method="POST">
 			<div class="row justify-content-md-center">
 				<div id="box-consultores" class="col-sm-12 col-md-10 col-lg-9 col-xl-9 form-box">					
 					<div class="row" style="padding-top: 15px;">
@@ -104,7 +104,7 @@
 							</div>
 			    		</div>
 					</div>
-  					<button type="button" class="btn btn-success btn-lg form-control btn-form" id="btn-salvar-consultores">
+  					<button type="submit" class="btn btn-success btn-lg form-control btn-form" id="btn-salvar-consultores">
   						<i class='fa fa-save'></i> Salvar dados
   					</button>
 				</div><!-- col-sm-8--> 

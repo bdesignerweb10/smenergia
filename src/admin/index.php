@@ -23,7 +23,7 @@ require_once('header_login.php');
 			  				<div class="checkbox">
 								<label>
 									<input type="checkbox" id="lembrar" name="lembrar" data-toggle="toggle" data-on="Sim" data-off="Não" data-onstyle="success" data-offstyle="danger">
-									Mantenhha-me conectado
+									Mantenha-me conectado
 								</label>
 							</div>
 			    		</div>

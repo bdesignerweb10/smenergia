@@ -1,5 +1,7 @@
-// BEGIN LOGOUT (logout.php)
 
+$(function() {
+
+// BEGIN LOGOUT (logout.php)
 $("#logout").on("click", function(e) {
 		e.preventDefault();
 
@@ -319,7 +321,8 @@ $("#logout").on("click", function(e) {
     });	
 
 
-	/* GERENCIAR CONSULTORES */		
+	/* GERENCIAR CONSULTORES */	
+
 
 	$('#btn-add-consultores').click(function(e) {
 		e.preventDefault();
@@ -332,8 +335,7 @@ $("#logout").on("click", function(e) {
 
     	$('#id').val('');
     	$('#nome').val('');
-    	$('#descricao').val('');
-    	$('#ativo').bootstrapToggle('off');		
+    	$('#descricao').val('');    			
     });
 
 	$('#btn-voltar-consultores').click(function(e) {
@@ -347,7 +349,92 @@ $("#logout").on("click", function(e) {
 		$('.headline-form').html('');
     });
 
-    $('#btn-salvar-consultores').click(function(e) {
+
+$("#form-consultores").submit(function(e) {
+		e.preventDefault();
+
+		$('#loading-modal').modal({
+			keyboard: false
+		});
+
+		var id = $('#btn-salvar-consultores').data('id');
+    	var act = $('#btn-salvar-consultores').data('act');
+
+    	if(act == "edit") {
+    		var url = "acts/acts.consultores.php?act=" + act + "&id=" + id;
+    	}
+    	else {
+    		var url = "acts/acts.consultores.php?act=" + act;    		
+    	}
+
+		var formData = new FormData();
+		formData.append('id', $('#id').val());
+		formData.append('nome', $('#nome').val());
+		formData.append('img', $('#img')[0].files[0]);
+		formData.append('descricao', $('#descricao').val());
+		formData.append('ativo', $('#ativo').val());		
+
+		$.ajax({
+			type: "POST",
+			url: url,
+			data : formData,
+			processData: false,
+			contentType: false,
+			success: function(data)
+			{
+			    try {
+			    	console.log(data);
+					$('#loading-modal').modal('hide');
+
+					var retorno = JSON.parse(data.replace(/(\r\n|\n|\r)/gm," ").replace(/\s+/g," "));
+
+					if(retorno.succeed) {
+						$('#id').val('');
+						$('#nome').val('');
+						$('#img').val('');
+						$('#descricao').val('');
+						$('#ativo').val('');
+
+						$('#alert-title').html("Dados alterados com sucesso!");
+						$('#alert-content').html("Dados do consultor registrados com sucesso! Ao fechar esta mensagem a página será recarregada.");
+						$('#alert').modal('show');
+
+						$('#alert').on('hidden.bs.modal', function (e) {
+							window.location.reload();
+						});
+					}
+					else {
+						$('#alert-title').html(retorno.title);
+						$('#alert-content').html(retorno.errno + " - " + retorno.erro);
+						$('#alert').modal('show');
+
+						$('#id').val('');
+						$('#nome').val('');
+						$('#img').val('');
+						$('#descricao').val('');
+						$('#ativo').val('');
+					}
+			    }
+			    catch (e) {
+					$('#loading-modal').modal('hide');
+					$('#alert-title').html("Erro ao fazer parse do JSON!");
+					$('#alert-content').html(String(e.stack));
+					$('#alert').modal('show');
+
+					$('#id').val('');
+					$('#nome').val('');
+					$('#img').val('');
+					$('#descricao').val('');
+					$('#ativo').val('');
+			    };
+			}
+		});
+	});
+
+
+
+
+   /*$('#btn-salvar-consultores').click(function(e) {
     	e.preventDefault();
 
 		$('#loading').modal({
@@ -361,16 +448,16 @@ $("#logout").on("click", function(e) {
     		var url = "acts/acts.consultores.php?act=" + act + "&id=" + id;
     	}
     	else {
-    		var url = "acts/acts.consultores.php?act=" + act;
+    		var url = "acts/acts.consultores.php?act=" + act;    		
     	}
 
+    	console.log(url);
 		$.ajax({
 			type: "POST",
-			url: url,
+			url: url,						
 			data: $("#form-consultores").serialize(),
 			success: function(data)
-			{
-				console.log('data', data);
+			{				
 				try {
 					$('#loading').modal('hide');
 
@@ -398,7 +485,7 @@ $("#logout").on("click", function(e) {
 			    };
 			}
 		});
-    });
+    });*/
 
     $('.btn-edit-consultores').click(function(e) {
 		e.preventDefault();
@@ -882,6 +969,426 @@ $("#logout").on("click", function(e) {
 		$('.headline-form').html('');
     });
 
+
+    /* GERENCIAR VOCÊ SABIA */
+
+
+	$('#btn-add-sabia').click(function(e) {
+		e.preventDefault();
+
+		$('.maintable').hide();
+		$('.mainform').show();
+
+		$('#btn-salvar-sabia').data('id', null);
+    	$('#btn-salvar-sabia').data('act', 'add');    	
+
+    	$('#id').val('');
+    	$('#pergunta').val('');
+    	$('#resposta').val('');
+    	$('#ativo').bootstrapToggle('off');		
+    });
+
+
+	$('#btn-salvar-sabia').click(function(e) {
+    	e.preventDefault();
+
+		$('#loading').modal({
+			keyboard: false
+		});
+
+    	var id = $(this).data('id');
+    	var act = $(this).data('act');
+
+    	if(act == "edit") {
+    		var url = "acts/acts.sabia.php?act=" + act + "&id=" + id;
+    	}
+    	else {
+    		var url = "acts/acts.sabia.php?act=" + act;
+    	}
+
+		$.ajax({
+			type: "POST",
+			url: url,
+			data: $("#form-sabia").serialize(),
+			success: function(data)
+			{
+				console.log('data', data);
+				try {
+					$('#loading').modal('hide');
+
+					var retorno = JSON.parse(data.replace(/(\r\n|\n|\r)/gm," ").replace(/\s+/g," "));
+					if(retorno.succeed) {
+						$('#alert-title').html($('#pergunta').val() + (act == 'add' ? " adicionado " : " editado ") + "com sucesso!");
+						$('#alert-content').html("A " + (act == 'add' ? " adição " : " edição ") + " de " + $('#pergunta').val() + " foi efetuada com sucesso! Ao fechar esta mensagem a página será recarregada.");
+						$('#alert').modal('show');
+
+						$('#alert').on('hidden.bs.modal', function (e) {
+							window.location.reload();
+						})
+					}
+					else {
+						$('#alert-title').html(retorno.title);
+						$('#alert-content').html(retorno.errno + " - " + retorno.erro);
+						$('#alert').modal('show');
+					}
+			    }
+			    catch (e) {
+					$('#loading').modal('hide');
+					$('#alert-title').html("Erro ao fazer parse do JSON!");
+					$('#alert-content').html(String(e.stack));
+					$('#alert').modal('show');
+			    };
+			}
+		});
+    });
+
+	$('.btn-edit-sabia').click(function(e) {
+		e.preventDefault();
+
+		$('#loading').modal({
+			keyboard: false
+		});
+
+    	var id = $(this).data('id');
+
+		$.ajax({
+			type: "POST",
+			url: "acts/acts.sabia.php?act=showupd&id=" + id,
+			success: function(data)		
+			{
+				try {
+					$('#loading').modal('hide');
+
+					var retorno = JSON.parse(data.replace(/(\r\n|\n|\r)/gm," ").replace(/\s+/g," "));
+
+					if(retorno.succeed) {
+						$('.maintable').hide();
+						$('.mainform').show();
+
+				    	$('#btn-salvar-sabia').data('act', 'edit');
+				    	$('#btn-salvar-sabia').data('id', id);	    				
+
+						//var d = new Date(retorno.dados.data * 1000);
+
+				    	$('#id').val(retorno.dados.id);
+				    	$('#pergunta').val(retorno.dados.pergunta);				    	
+				    	$('#resposta').val(retorno.dados.resposta);
+				    	//$('#ativo').bootstrapToggle(retorno.dados.ativo == 1 ? 'on' : 'off');				    	
+					}
+					else {
+						$('.mainform').hide();
+						$('.maintable').show();
+
+				    	$('#btn-salvar-sabia').data('id', null);
+				    	$('#btn-salvar-sabia').data('act', null);				    	
+
+				    	$('#id').val('');
+				    	$('#pergunta').val('');				    	
+				    	$('#resposta').val('');
+				    	//$('#ativo').bootstrapToggle('off');				    	
+
+						$('#alert-title').html(retorno.title);
+						$('#alert-content').html(retorno.errno + " - " + retorno.erro);
+						$('#alert').modal('show');
+					}
+			    }
+			    catch (e) {			    	
+					$('#loading').modal('hide');
+					$('#alert-title').html("Erro ao fazer parse do JSON!");
+					$('#alert-content').html(String(e.stack));
+					$('#alert').modal('show');
+			    };
+			}
+		});
+    });
+
+    $('.btn-del-sabia').click(function(e) {
+		e.preventDefault();
+
+		$('#loading').modal({
+			keyboard: false
+		});
+
+    	var id = $(this).data('id');
+
+		$.ajax({
+			type: "POST",
+			url: "acts/acts.sabia.php?act=del&id=" + id,
+			success: function(data)
+			{
+				try {
+					$('#loading').modal('hide');
+
+					var retorno = JSON.parse(data.replace(/(\r\n|\n|\r)/gm," ").replace(/\s+/g," "));
+
+					if(retorno.succeed) {
+						$('#alert-title').html("Evento removido com sucesso!");
+						$('#alert-content').html("A remoção do evento foi efetuada com sucesso! Ao fechar esta mensagem a página será recarregada.");
+						$('#alert').modal('show');
+
+						$('#alert').on('hidden.bs.modal', function (e) {
+							window.location.reload();
+						});
+					}
+					else {
+						$('#alert-title').html(retorno.title);
+						$('#alert-content').html(retorno.errno + " - " + retorno.erro);
+						$('#alert').modal('show');
+					}
+			    }
+			    catch (e) {
+					$('#loading').modal('hide');
+					$('#alert-title').html("Erro ao fazer parse do JSON!");
+					$('#alert-content').html(String(e.stack));
+					$('#alert').modal('show');
+			    };
+			}
+		});
+    });
+
+	$('#btn-voltar-sabia').click(function(e) {
+		e.preventDefault();
+
+		$('.mainform').hide();
+		$('.maintable').show();
+
+    	$('#btn-salvar-sabia').data('id', null);
+    	$('#headline-ger-sabia').html('');
+		$('.headline-form').html('');
+    });
+
+
+
+    /* GERENCIAR CLIENTES E PARCEIROS */
+
+    $('#btn-add-clipar').click(function(e) {
+		e.preventDefault();
+
+		$('.maintable').hide();
+		$('.mainform').show();
+
+		$('#btn-salvar-clipar').data('id', null);
+    	$('#btn-salvar-clipar').data('act', 'add');    	
+
+    	$('#id').val('');
+    	$('#nome').val('');
+    	$('#telefone').val(''); 
+    	$('#cliente').bootstrapToggle('off'); 
+    	$('#parceiro').bootstrapToggle('off');    		    		
+    });
+
+	$('#btn-voltar-clipar').click(function(e) {
+		e.preventDefault();
+
+		$('.mainform').hide();
+		$('.maintable').show();
+
+    	$('#btn-salvar-clipar').data('id', null);
+    	$('#headline-ger-clipar').html('');
+		$('.headline-form').html('');
+
+		$('#id').val('');
+    	$('#nome').val('');
+    	$('#telefone').val('');
+    	$('#cliente').bootstrapToggle('off');
+    	$('#parceiro').bootstrapToggle('off');
+    });
+
+
+$("#form-clipar").submit(function(e) {
+		e.preventDefault();
+
+		$('#loading-modal').modal({
+			keyboard: false
+		});
+
+		var id = $('#btn-salvar-clipar').data('id');
+    	var act = $('#btn-salvar-clipar').data('act');
+
+    	if(act == "edit") {
+    		var url = "acts/acts.clipar.php?act=" + act + "&id=" + id;
+    	}
+    	else {
+    		var url = "acts/acts.clipar.php?act=" + act;    		
+    	}
+
+		var formData = new FormData();
+		formData.append('id', $('#id').val());
+		formData.append('nome', $('#nome').val());
+		formData.append('telefone', $('#telefone').val());
+		formData.append('img', $('#img')[0].files[0]);
+		formData.append('cliente', $('#cliente').val());
+		formData.append('parceiro', $('#parceiro').val());		
+
+		$.ajax({
+			type: "POST",
+			url: url,
+			data : formData,
+			processData: false,
+			contentType: false,
+			success: function(data)
+			{
+			    try {
+			    	console.log(data);
+					$('#loading-modal').modal('hide');
+
+					var retorno = JSON.parse(data.replace(/(\r\n|\n|\r)/gm," ").replace(/\s+/g," "));
+
+					if(retorno.succeed) {
+						$('#id').val('');
+						$('#nome').val('');
+						$('#telefone').val('');
+						$('#img').val('');
+						$('#cliente').val('');
+						$('#parceiro').val('');
+
+						$('#alert-title').html("Dados alterados com sucesso!");
+						$('#alert-content').html("Dados de clientes/parceiros registrados com sucesso! Ao fechar esta mensagem a página será recarregada.");
+						$('#alert').modal('show');
+
+						$('#alert').on('hidden.bs.modal', function (e) {
+							window.location.reload();
+						});
+					}
+					else {
+						$('#alert-title').html(retorno.title);
+						$('#alert-content').html(retorno.errno + " - " + retorno.erro);
+						$('#alert').modal('show');
+
+						$('#id').val('');
+						$('#nome').val('');
+						$('#telefone').val('');
+						$('#img').val('');
+						$('#cliente').val('');
+						$('#parceiro').val('');
+					}
+			    }
+			    catch (e) {
+					$('#loading-modal').modal('hide');
+					$('#alert-title').html("Erro ao fazer parse do JSON!");
+					$('#alert-content').html(String(e.stack));
+					$('#alert').modal('show');
+
+					$('#id').val('');
+						$('#nome').val('');
+						$('#telefone').val('');
+						$('#img').val('');
+						$('#cliente').val('');
+						$('#parceiro').val('');
+			    };
+			}
+		});
+	});
+
+   
+
+    $('.btn-edit-clipar').click(function(e) {
+		e.preventDefault();
+
+		$('#loading').modal({
+			keyboard: false
+		});
+
+    	var id = $(this).data('id');
+
+		$.ajax({
+			type: "POST",
+			url: "acts/acts.clipar.php?act=showupd&id=" + id,
+			success: function(data)		
+			{
+				try {
+					$('#loading').modal('hide');
+
+					var retorno = JSON.parse(data.replace(/(\r\n|\n|\r)/gm," ").replace(/\s+/g," "));
+
+					if(retorno.succeed) {
+						$('.maintable').hide();
+						$('.mainform').show();
+
+				    	$('#btn-salvar-clipar').data('act', 'edit');
+				    	$('#btn-salvar-clipar').data('id', id);	    				
+
+						//var d = new Date(retorno.dados.data * 1000);
+
+				    	$('#id').val(retorno.dados.id);
+				    	$('#nome').val(retorno.dados.nome);				    	
+				    	$('#telefone').val(retorno.dados.telefone);				    	
+				    	$('#cliente').bootstrapToggle(retorno.dados.cliente == 1 ? 'on' : 'off');	
+				    	$('#parceiro').bootstrapToggle(retorno.dados.parceiro == 1 ? 'on' : 'off');				    	
+					}
+					else {
+						$('.mainform').hide();
+						$('.maintable').show();
+
+				    	$('#btn-salvar-clipar').data('id', null);
+				    	$('#btn-salvar-clipar').data('act', null);				    	
+
+				    	$('#id').val('');
+				    	$('#nome').val('');				    	
+				    	$('#telefone').val('');
+				    	$('#cliente').bootstrapToggle('off');
+				    	$('#parceiro').bootstrapToggle('off');				    			    	
+
+						$('#alert-title').html(retorno.title);
+						$('#alert-content').html(retorno.errno + " - " + retorno.erro);
+						$('#alert').modal('show');
+					}
+			    }
+			    catch (e) {			    	
+					$('#loading').modal('hide');
+					$('#alert-title').html("Erro ao fazer parse do JSON!");
+					$('#alert-content').html(String(e.stack));
+					$('#alert').modal('show');
+			    };
+			}
+		});
+    });
+
+    $('.btn-del-clipar').click(function(e) {
+		e.preventDefault();
+
+		$('#loading').modal({
+			keyboard: false
+		});
+
+    	var id = $(this).data('id');
+
+		$.ajax({
+			type: "POST",
+			url: "acts/acts.clipar.php?act=del&id=" + id,
+			success: function(data)
+			{
+				try {
+					$('#loading').modal('hide');
+
+					var retorno = JSON.parse(data.replace(/(\r\n|\n|\r)/gm," ").replace(/\s+/g," "));
+
+					if(retorno.succeed) {
+						$('#alert-title').html("Clientes / Parceiros removido com sucesso!");
+						$('#alert-content').html("A remoção do Cliente / Parceiro foi efetuada com sucesso! Ao fechar esta mensagem a página será recarregada.");
+						$('#alert').modal('show');
+
+						$('#alert').on('hidden.bs.modal', function (e) {
+							window.location.reload();
+						});
+					}
+					else {
+						$('#alert-title').html(retorno.title);
+						$('#alert-content').html(retorno.errno + " - " + retorno.erro);
+						$('#alert').modal('show');
+					}
+			    }
+			    catch (e) {
+					$('#loading').modal('hide');
+					$('#alert-title').html("Erro ao fazer parse do JSON!");
+					$('#alert-content').html(String(e.stack));
+					$('#alert').modal('show');
+			    };
+			}
+		});
+    });
+
+});
 /*!
  * Validator v0.11.9 for Bootstrap 3, by @1000hz
  * Copyright 2017 Cina Saffary

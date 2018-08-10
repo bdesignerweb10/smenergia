@@ -1,7 +1,7 @@
 <?php
 	require_once('header.php');
 
-	$clientes = $conn->query("select * from vw_clientes") or trigger_error($conn->error);
+	$clientes = $conn->query("select * from clientes_parceiros where cliente_ativo = '0'") or trigger_error($conn->error);
 ?>	
 	</div><!-- container -->
 	<div class="container-fluid">
