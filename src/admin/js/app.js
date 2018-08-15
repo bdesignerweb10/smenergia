@@ -1217,9 +1217,13 @@ $("#form-clipar").submit(function(e) {
 		formData.append('nome', $('#nome').val());
 		formData.append('telefone', $('#telefone').val());
 		formData.append('img', $('#img')[0].files[0]);
-		formData.append('cliente', $('#cliente').val());
-		formData.append('parceiro', $('#parceiro').val());		
-
+		//formData.append('cliente', $('#cliente').val());
+		//formData.append('parceiro', $('#parceiro').val());	
+		formData.append("cliente", document.getElementById("cliente").checked?"0":"1");	
+		formData.append("parceiro", document.getElementById("parceiro").checked?"0":"1");		
+		console.log($("#cliente").is(":checked"));
+		console.log($("#parceiro").is(":checked"));
+		
 		$.ajax({
 			type: "POST",
 			url: url,
@@ -1313,8 +1317,8 @@ $("#form-clipar").submit(function(e) {
 				    	$('#id').val(retorno.dados.id);
 				    	$('#nome').val(retorno.dados.nome);				    	
 				    	$('#telefone').val(retorno.dados.telefone);				    	
-				    	$('#cliente').bootstrapToggle(retorno.dados.cliente == 1 ? 'on' : 'off');	
-				    	$('#parceiro').bootstrapToggle(retorno.dados.parceiro == 1 ? 'on' : 'off');				    	
+				    	$('#cliente').bootstrapToggle(retorno.dados.cliente == 0 ? 'on' : 'off');	
+				    	$('#parceiro').bootstrapToggle(retorno.dados.parceiro == 0 ? 'on' : 'off');				    	
 					}
 					else {
 						$('.mainform').hide();
@@ -1389,6 +1393,591 @@ $("#form-clipar").submit(function(e) {
     });
 
 });
+
+
+/* GERENCIAR TREINAMENTOS / PALESTRAS */
+
+	$('#btn-add-treinamentos').click(function(e) {
+		e.preventDefault();
+
+		$('.maintable').hide();
+		$('.mainform').show();
+		$('.mainform-palestra').hide();
+
+		$('#btn-salvar-treinamentos').data('id', null);
+    	$('#btn-salvar-treinamentos').data('act', 'add');    	
+
+    	$('#id').val('');    	
+    	$('#descricao').val('');
+    	$('#ativo').bootstrapToggle('off');		
+    });
+
+    $('#btn-voltar-treinamentos').click(function(e) {
+		e.preventDefault();
+
+		$('.mainform').hide();
+		$('.mainform-palestra').hide();
+		$('.maintable').show();
+
+    	$('#btn-salvar-treinamentos').data('id', null);
+    	$('#headline-ger-treinamentos').html('');
+		$('.headline-form').html('');
+    });	
+
+    $('#btn-salvar-treinamentos').click(function(e) {
+    	e.preventDefault();
+
+		$('#loading').modal({
+			keyboard: false
+		});
+
+    	var id = $(this).data('id');
+    	var act = $(this).data('act');
+
+    	if(act == "edit") {
+    		var url = "acts/acts.treinamentos.php?act=" + act + "&id=" + id;
+    	}
+    	else {
+    		var url = "acts/acts.treinamentos.php?act=" + act;
+    	}
+
+		$.ajax({
+			type: "POST",
+			url: url,
+			data: $("#form-treinamentos").serialize(),
+			success: function(data)
+			{
+				console.log('data', data);
+				try {
+					$('#loading').modal('hide');
+
+					var retorno = JSON.parse(data.replace(/(\r\n|\n|\r)/gm," ").replace(/\s+/g," "));
+					if(retorno.succeed) {
+						$('#alert-title').html($('#titulo').val() + (act == 'add' ? " adicionado " : " editado ") + "com sucesso!");
+						$('#alert-content').html("A " + (act == 'add' ? " adição " : " edição ") + " de " + $('#titulo').val() + " foi efetuada com sucesso! Ao fechar esta mensagem a página será recarregada.");
+						$('#alert').modal('show');
+
+						$('#alert').on('hidden.bs.modal', function (e) {
+							window.location.reload();
+						})
+					}
+					else {
+						$('#alert-title').html(retorno.title);
+						$('#alert-content').html(retorno.errno + " - " + retorno.erro);
+						$('#alert').modal('show');
+					}
+			    }
+			    catch (e) {
+					$('#loading').modal('hide');
+					$('#alert-title').html("Erro ao fazer parse do JSON!");
+					$('#alert-content').html(String(e.stack));
+					$('#alert').modal('show');
+			    };
+			}
+		});
+    });
+
+    $('.btn-edit-treinamentos').click(function(e) {
+		e.preventDefault();
+
+		$('#loading').modal({
+			keyboard: false
+		});
+
+    	var id = $(this).data('id');
+
+		$.ajax({
+			type: "POST",
+			url: "acts/acts.treinamentos.php?act=showupd&id=" + id,
+			success: function(data)		
+			{
+				try {
+					$('#loading').modal('hide');
+
+					var retorno = JSON.parse(data.replace(/(\r\n|\n|\r)/gm," ").replace(/\s+/g," "));
+
+					if(retorno.succeed) {
+						$('.maintable').hide();
+						$('.mainform').show();
+
+				    	$('#btn-salvar-treinamentos').data('act', 'edit');
+				    	$('#btn-salvar-treinamentos').data('id', id);	    				
+
+						//var d = new Date(retorno.dados.data * 1000);
+
+				    	$('#id').val(retorno.dados.id);			    	
+				    	$('#descricao').val(retorno.dados.descricao);
+				    	//$('#ativo').bootstrapToggle(retorno.dados.ativo == 1 ? 'on' : 'off');				    	
+					}
+					else {
+						$('.mainform').hide();
+						$('.maintable').show();
+
+				    	$('#btn-salvar-treinamentos').data('id', null);
+				    	$('#btn-salvar-treinamentos').data('act', null);				    	
+
+				    	$('#id').val('');				    				    	
+				    	$('#descricao').val('');
+				    	//$('#ativo').bootstrapToggle('off');				    	
+
+						$('#alert-title').html(retorno.title);
+						$('#alert-content').html(retorno.errno + " - " + retorno.erro);
+						$('#alert').modal('show');
+					}
+			    }
+			    catch (e) {			    	
+					$('#loading').modal('hide');
+					$('#alert-title').html("Erro ao fazer parse do JSON!");
+					$('#alert-content').html(String(e.stack));
+					$('#alert').modal('show');
+			    };
+			}
+		});
+    });
+
+    $('.btn-del-treinamentos').click(function(e) {
+		e.preventDefault();
+
+		$('#loading').modal({
+			keyboard: false
+		});
+
+    	var id = $(this).data('id');
+
+		$.ajax({
+			type: "POST",
+			url: "acts/acts.treinamentos.php?act=del&id=" + id,
+			success: function(data)
+			{
+				try {
+					$('#loading').modal('hide');
+
+					var retorno = JSON.parse(data.replace(/(\r\n|\n|\r)/gm," ").replace(/\s+/g," "));
+
+					if(retorno.succeed) {
+						$('#alert-title').html("Evento removido com sucesso!");
+						$('#alert-content').html("A remoção do evento foi efetuada com sucesso! Ao fechar esta mensagem a página será recarregada.");
+						$('#alert').modal('show');
+
+						$('#alert').on('hidden.bs.modal', function (e) {
+							window.location.reload();
+						});
+					}
+					else {
+						$('#alert-title').html(retorno.title);
+						$('#alert-content').html(retorno.errno + " - " + retorno.erro);
+						$('#alert').modal('show');
+					}
+			    }
+			    catch (e) {
+					$('#loading').modal('hide');
+					$('#alert-title').html("Erro ao fazer parse do JSON!");
+					$('#alert-content').html(String(e.stack));
+					$('#alert').modal('show');
+			    };
+			}
+		});
+    });
+
+
+/* GERENCIAR PALESTRAS */
+
+$('#btn-add-palestra').click(function(e) {
+		e.preventDefault();
+
+		$('.maintable').hide();
+		$('.mainform').hide();
+		$('.mainform-palestra').show();
+
+		$('#btn-salvar-palestra').data('id', null);
+    	$('#btn-salvar-palestra').data('act', 'add');    	
+
+    	$('#id').val('');    	
+    	$('#titulo').val('');
+    	$('#ativo').bootstrapToggle('off');		
+    });
+
+    $('#btn-voltar-palestra').click(function(e) {
+		e.preventDefault();
+
+		$('.mainform').hide();
+		$('.mainform-palestra').hide();
+		$('.maintable').show();
+
+    	$('#btn-salvar-palestra').data('id', null);
+    	$('#headline-ger-palestra').html('');
+		$('.headline-form').html('');
+    });
+
+
+    $('#btn-salvar-palestra').click(function(e) {
+    	e.preventDefault();
+
+		$('#loading').modal({
+			keyboard: false
+		});
+
+    	var id = $(this).data('id');
+    	var act = $(this).data('act');
+
+    	if(act == "edit") {
+    		var url = "acts/acts.palestras.php?act=" + act + "&id=" + id;
+    	}
+    	else {
+    		var url = "acts/acts.palestras.php?act=" + act;
+    	}
+
+		$.ajax({
+			type: "POST",
+			url: url,
+			data: $("#form-palestra").serialize(),
+			success: function(data)
+			{
+				console.log('data', data);
+				try {
+					$('#loading').modal('hide');
+
+					var retorno = JSON.parse(data.replace(/(\r\n|\n|\r)/gm," ").replace(/\s+/g," "));
+					if(retorno.succeed) {
+						$('#alert-title').html($('#titulo').val() + (act == 'add' ? " adicionado " : " editado ") + "com sucesso!");
+						$('#alert-content').html("A " + (act == 'add' ? " adição " : " edição ") + " de " + $('#titulo').val() + " foi efetuada com sucesso! Ao fechar esta mensagem a página será recarregada.");
+						$('#alert').modal('show');
+
+						$('#alert').on('hidden.bs.modal', function (e) {
+							window.location.reload();
+						})
+					}
+					else {
+						$('#alert-title').html(retorno.title);
+						$('#alert-content').html(retorno.errno + " - " + retorno.erro);
+						$('#alert').modal('show');
+					}
+			    }
+			    catch (e) {
+					$('#loading').modal('hide');
+					$('#alert-title').html("Erro ao fazer parse do JSON!");
+					$('#alert-content').html(String(e.stack));
+					$('#alert').modal('show');
+			    };
+			}
+		});
+    });
+
+    $('.btn-edit-palestra').click(function(e) {
+		e.preventDefault();
+
+		$('#loading').modal({
+			keyboard: false
+		});
+
+    	var id = $(this).data('id');    	
+
+		$.ajax({
+			type: "POST",
+			url: "acts/acts.palestras.php?act=showupd&id=" + id,
+			success: function(data)
+			{				
+				try {				
+					$('#loading').modal('hide');
+
+					var retorno = JSON.parse(data.replace(/(\r\n|\n|\r)/gm," ").replace(/\s+/g," "));
+
+					if(retorno.succeed) {
+						$('.maintable').hide();						
+						$('.mainform-palestra').show();
+
+				    	$('#btn-salvar-palestra').data('act', 'edit');
+				    	$('#btn-salvar-palestra').data('id', id);
+						
+
+				    	$('#id').val(retorno.dados.id);
+				    	$('#titulo').val(retorno.dados.titulo);	
+				    	//$('#ativo').bootstrapToggle(retorno.dados.ativo == 1 ? 'on' : 'off');				    	
+					}
+					else {
+						
+						$('.maintable').hide();
+						$('.mainform-palestra').show();
+
+				    	$('#btn-salvar-palestra').data('id', null);
+				    	$('#btn-salvar-palestra').data('act', null);				    	
+
+				    	$('#id').val('');
+				    	$('#titulo').val('');				    	
+
+						$('#alert-title').html(retorno.title);
+						$('#alert-content').html(retorno.errno + " - " + retorno.erro);
+						$('#alert').modal('show');
+					}
+			    }
+			    catch (e) {			    	
+					$('#loading').modal('hide');
+					$('#alert-title').html("Erro ao fazer parse do JSON!");
+					$('#alert-content').html(String(e.stack));
+					$('#alert').modal('show');
+			    };
+			}
+		});
+    });
+
+    $('.btn-del-palestra').click(function(e) {
+		e.preventDefault();
+
+		$('#loading').modal({
+			keyboard: false
+		});
+
+    	var id = $(this).data('id');
+
+		$.ajax({
+			type: "POST",
+			url: "acts/acts.palestras.php?act=del&id=" + id,
+			success: function(data)
+			{
+				try {
+					$('#loading').modal('hide');
+
+					var retorno = JSON.parse(data.replace(/(\r\n|\n|\r)/gm," ").replace(/\s+/g," "));
+
+					if(retorno.succeed) {
+						$('#alert-title').html("Evento removido com sucesso!");
+						$('#alert-content').html("A remoção do evento foi efetuada com sucesso! Ao fechar esta mensagem a página será recarregada.");
+						$('#alert').modal('show');
+
+						$('#alert').on('hidden.bs.modal', function (e) {
+							window.location.reload();
+						});
+					}
+					else {
+						$('#alert-title').html(retorno.title);
+						$('#alert-content').html(retorno.errno + " - " + retorno.erro);
+						$('#alert').modal('show');
+					}
+			    }
+			    catch (e) {
+					$('#loading').modal('hide');
+					$('#alert-title').html("Erro ao fazer parse do JSON!");
+					$('#alert-content').html(String(e.stack));
+					$('#alert').modal('show');
+			    };
+			}
+		});
+    });
+
+    /* GERENCIAR SLIDES */
+
+    $('#btn-add-slides').click(function(e) {
+		e.preventDefault();
+
+		$('.maintable').hide();
+		$('.mainform').show();
+
+		$('#btn-salvar-slides').data('id', null);
+    	$('#btn-salvar-slides').data('act', 'add');    	
+
+    	$('#id').val('');
+    	$('#nome').val('');
+    	$('#link').val('');    			
+    });
+
+    $('#btn-voltar-slides').click(function(e) {
+		e.preventDefault();
+
+		$('.mainform').hide();
+		$('.maintable').show();
+
+    	$('#btn-salvar-slides').data('id', null);
+    	$('#headline-ger-slides').html('');
+		$('.headline-form').html('');
+    });
+
+    $("#form-slides").submit(function(e) {
+		e.preventDefault();
+
+		$('#loading-modal').modal({
+			keyboard: false
+		});
+
+		var id = $('#btn-salvar-slides').data('id');
+    	var act = $('#btn-salvar-slides').data('act');
+
+    	if(act == "edit") {
+    		var url = "acts/acts.slides.php?act=" + act + "&id=" + id;
+    	}
+    	else {
+    		var url = "acts/acts.slides.php?act=" + act;    		
+    	}
+
+		var formData = new FormData();
+		formData.append('id', $('#id').val());
+		formData.append('nome', $('#nome').val());
+		formData.append('img', $('#img')[0].files[0]);
+		formData.append('link', $('#link').val());
+		formData.append('ativo', $('#ativo').val());		
+
+		$.ajax({
+			type: "POST",
+			url: url,
+			data : formData,
+			processData: false,
+			contentType: false,
+			success: function(data)
+			{
+			    try {
+			    	console.log(data);
+					$('#loading-modal').modal('hide');
+
+					var retorno = JSON.parse(data.replace(/(\r\n|\n|\r)/gm," ").replace(/\s+/g," "));
+
+					if(retorno.succeed) {
+						$('#id').val('');
+						$('#nome').val('');
+						$('#img').val('');
+						$('#link').val('');
+						$('#ativo').val('');
+
+						$('#alert-title').html("Dados alterados com sucesso!");
+						$('#alert-content').html("Dados do consultor registrados com sucesso! Ao fechar esta mensagem a página será recarregada.");
+						$('#alert').modal('show');
+
+						$('#alert').on('hidden.bs.modal', function (e) {
+							window.location.reload();
+						});
+					}
+					else {
+						$('#alert-title').html(retorno.title);
+						$('#alert-content').html(retorno.errno + " - " + retorno.erro);
+						$('#alert').modal('show');
+
+						$('#id').val('');
+						$('#nome').val('');
+						$('#img').val('');
+						$('#link').val('');
+						$('#ativo').val('');
+					}
+			    }
+			    catch (e) {
+					$('#loading-modal').modal('hide');
+					$('#alert-title').html("Erro ao fazer parse do JSON!");
+					$('#alert-content').html(String(e.stack));
+					$('#alert').modal('show');
+
+					$('#id').val('');
+					$('#nome').val('');
+					$('#img').val('');
+					$('#link').val('');
+					$('#ativo').val('');
+			    };
+			}
+		});
+	});
+
+	$('.btn-edit-slides').click(function(e) {
+		e.preventDefault();
+
+		$('#loading').modal({
+			keyboard: false
+		});
+
+    	var id = $(this).data('id');
+
+		$.ajax({
+			type: "POST",
+			url: "acts/acts.slides.php?act=showupd&id=" + id,
+			success: function(data)		
+			{
+				try {
+					$('#loading').modal('hide');
+
+					var retorno = JSON.parse(data.replace(/(\r\n|\n|\r)/gm," ").replace(/\s+/g," "));
+
+					if(retorno.succeed) {
+						$('.maintable').hide();
+						$('.mainform').show();
+
+				    	$('#btn-salvar-slides').data('act', 'edit');
+				    	$('#btn-salvar-slides').data('id', id);	    				
+
+						//var d = new Date(retorno.dados.data * 1000);
+
+				    	$('#id').val(retorno.dados.id);
+				    	$('#nome').val(retorno.dados.nome);				    	
+				    	$('#link').val(retorno.dados.link);
+				    	//$('#ativo').bootstrapToggle(retorno.dados.ativo == 1 ? 'on' : 'off');				    	
+					}
+					else {
+						$('.mainform').hide();
+						$('.maintable').show();
+
+				    	$('#btn-salvar-slides').data('id', null);
+				    	$('#btn-salvar-slides').data('act', null);				    	
+
+				    	$('#id').val('');
+				    	$('#nome').val('');				    	
+				    	$('#link').val('');
+				    	//$('#ativo').bootstrapToggle('off');				    	
+
+						$('#alert-title').html(retorno.title);
+						$('#alert-content').html(retorno.errno + " - " + retorno.erro);
+						$('#alert').modal('show');
+					}
+			    }
+			    catch (e) {			    	
+					$('#loading').modal('hide');
+					$('#alert-title').html("Erro ao fazer parse do JSON!");
+					$('#alert-content').html(String(e.stack));
+					$('#alert').modal('show');
+			    };
+			}
+		});
+    });
+
+    $('.btn-del-slides').click(function(e) {
+		e.preventDefault();
+
+		$('#loading').modal({
+			keyboard: false
+		});
+
+    	var id = $(this).data('id');
+
+		$.ajax({
+			type: "POST",
+			url: "acts/acts.slides.php?act=del&id=" + id,
+			success: function(data)
+			{
+				try {
+					$('#loading').modal('hide');
+
+					var retorno = JSON.parse(data.replace(/(\r\n|\n|\r)/gm," ").replace(/\s+/g," "));
+
+					if(retorno.succeed) {
+						$('#alert-title').html("Slide removido com sucesso!");
+						$('#alert-content').html("A remoção do slide foi efetuada com sucesso! Ao fechar esta mensagem a página será recarregada.");
+						$('#alert').modal('show');
+
+						$('#alert').on('hidden.bs.modal', function (e) {
+							window.location.reload();
+						});
+					}
+					else {
+						$('#alert-title').html(retorno.title);
+						$('#alert-content').html(retorno.errno + " - " + retorno.erro);
+						$('#alert').modal('show');
+					}
+			    }
+			    catch (e) {
+					$('#loading').modal('hide');
+					$('#alert-title').html("Erro ao fazer parse do JSON!");
+					$('#alert-content').html(String(e.stack));
+					$('#alert').modal('show');
+			    };
+			}
+		});
+    });
+
+
+
 /*!
  * Validator v0.11.9 for Bootstrap 3, by @1000hz
  * Copyright 2017 Cina Saffary

@@ -105,16 +105,16 @@
 						<div class="col-12">
 			  				<div class="checkbox">
 								<label>
-									<input type="checkbox" id="cliente" name="cliente" data-toggle="toggle" data-on="Ativo" data-off="Inativo" data-onstyle="success" data-offstyle="danger">
-									Se a opção estiver marcarda será "Cliente" e aparecerá na página clientes
+									<input type="checkbox" id="cliente" name="cliente" data-toggle="toggle" data-on="Sim" data-off="Não" data-onstyle="success" data-offstyle="danger">
+									Se a opção estiver marcarda como Sim o "Cliente" e aparecerá na página clientes
 								</label>
 							</div>
 			    		</div>
 			    		<div class="col-12">
 			  				<div class="checkbox">
 								<label>
-									<input type="checkbox" id="parceiro" name="parceiro" data-toggle="toggle" data-on="Ativo" data-off="Inativo" data-onstyle="success" data-offstyle="danger">
-									Se a opção estiver marcarda será "Parceiro" e aparecerá na página parceiros
+									<input type="checkbox" id="parceiro" name="parceiro" data-toggle="toggle" data-on="Sim" data-off="Não" data-onstyle="success" data-offstyle="danger">
+									Se a opção estiver marcarda Sim o "Parceiro" e aparecerá na página parceiros
 								</label>
 							</div>
 			    		</div>

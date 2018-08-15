@@ -15,19 +15,19 @@
 
 					$id = $_GET['id']; // $_SESSION["fake_id"];
 
-			    	$qry_clipar = $conn->query("SELECT id, nome, telefone, img ,cliente_ativo,parceiro_ativo FROM clientes_parceiros WHERE id = $id") or trigger_error("27005 - " . $conn->error);
+			    	$qry_slides = $conn->query("SELECT id, nome, img, link ,ativo FROM banner WHERE id = $id") or trigger_error("27005 - " . $conn->error);
 
-					if ($qry_clipar && $qry_clipar->num_rows > 0) {
+					if ($qry_slides && $qry_slides->num_rows > 0) {
 						$dados = "";
-		    			while($clientes = $qry_clipar->fetch_object()) {
-		    				$dados = '{"id" : "' . $clientes->id . '", "nome" : "' . $clientes->nome . '", "telefone" : "' . $clientes->telefone . '","img" : "'. $consultor->img .'"  ,"cliente_ativo" : "' . $clientes->cliente_ativo . '","parceiro_ativo" : "' . $clientes->parceiro_ativo . '"}';
+		    			while($slides = $qry_slides->fetch_object()) {
+		    				$dados = '{"id" : "' . $slides->id . '", "nome" : "' . $slides->nome . '", "img" : "'. $slides->img .'"  ,"link" : "' . $slides->link . '","ativo" : "' . $slides->ativo . '"}';
 		    			}
 
 						echo '{"succeed": true, "dados": ' . $dados . '}';
 						exit();
 		    		}
 		    		else {
-		    			throw new Exception('Nenhum cliente ou parceiro encontrado com o ID ' . $id . "!");
+		    			throw new Exception('Nenhum evento encontrado com o ID ' . $id . "!");
 		    		}
 				} catch(Exception $e) {
 					echo '{"succeed": false, "errno": 24005, "title": "Erro ao carregar os dados!", "erro": "Ocorreu um erro ao carregar os dados: ' . $e->getMessage() . '"}';
@@ -44,13 +44,13 @@
 						$errMsg = "";
 
 						if(!isset($_POST["nome"]) || empty($_POST["nome"])) {
-							$errMsg .= "Nome (Nome do cliente ou parceiro)";
+							$errMsg .= "Titulo do Slide";
 							$isValid = false;
 						}
 						
 
-						if(!isset($_POST["telefone"]) || empty($_POST["telefone"])) {
-							$errMsg .= "telefone do cliente ou parceiro";
+						if(!isset($_POST["link"]) || empty($_POST["link"])) {
+							$errMsg .= "link do slide";
 							$isValid = false;
 						}						
 
@@ -73,7 +73,7 @@
 					        		throw new Exception("Tamanho mínimo da largura da imagem precisa ser 178px! Favor escolher outra imagem e enviar novamente!");
 							    }
 
-							    $pathImagem = "../../img/clientes/" . ($_FILES['img']['name']);
+							    $pathImagem = "../../img/slides/" . ($_FILES['img']['name']);
 							    
 
 							    if(is_uploaded_file($_FILES['img']['tmp_name']) || $_FILES['img']['error'] !== UPLOAD_ERR_OK) {
@@ -94,24 +94,20 @@
 									imagedestroy($src);
 							    }							   
 							}
-							if($_FILES['img'] == ''){
-								$imagem = 'no-image.png';
-							} else{
-							$imagem = $_FILES['img']['name'];	
-							}						
+
+							$imagem = $_FILES['img']['name'];							
 							$nome = $_POST["nome"];
-							$telefone = $_POST["telefone"];
-							$cliente = (isset($_POST["cliente"]) && $_POST["cliente"] == "0" ? "0" : "1");						
-							$parceiro = (isset($_POST["parceiro"]) && $_POST["parceiro"] == "0" ? "0" : "1");
-														
+							$link = $_POST["link"];
+							$ativo = (isset($_POST["ativo"]) && $_POST["ativo"] == "on" ? "0" : "1");	
+							
 
-							$qry_cli_par = "INSERT INTO clientes_parceiros (nome, telefone, img, cliente_ativo ,parceiro_ativo) VALUES ('" . $nome . "','" . $telefone . "', '". $imagem ."' ,'" . $cliente . "','" . $parceiro . "')";
+							$qry_slides = "INSERT INTO banner (nome, img, link ,ativo) VALUES ('" . $nome . "','" . $imagem . "', '". $link ."' ,'" . $ativo . "')";
 
-							if ($conn->query($qry_cli_par) === TRUE) {
+							if ($conn->query($qry_slides) === TRUE) {
 								$conn->commit();
 								echo '{"succeed": true}';
 							} else {
-						        throw new Exception("Erro ao inserir o evento: " . $qry_cli_par . "<br>" . $conn->error);
+						        throw new Exception("Erro ao inserir o evento: " . $qry_slides . "<br>" . $conn->error);
 							}							
 						}
 					}
@@ -142,12 +138,12 @@
 						$errMsg = "";
 
 						if(!isset($_POST["nome"]) || empty($_POST["nome"])) {
-							$errMsg .= "Nome (nome do cliente ou parceiro)";
+							$errMsg .= "Titulo do Slide";
 							$isValid = false;
 						}					
 
-						if(!isset($_POST["telefone"]) || empty($_POST["telefone"])) {
-							$errMsg .= "Telefone do cliente ou parceiro";
+						if(!isset($_POST["link"]) || empty($_POST["link"])) {
+							$errMsg .= "Link do slide";
 							$isValid = false;
 						}
 
@@ -169,7 +165,7 @@
 					        		throw new Exception("Tamanho mínimo da largura da imagem precisa ser 178px! Favor escolher outra imagem e enviar novamente!");
 							    }
 
-							    $pathImagem = "../../img/clientes/" . ($_FILES['img']['name']);
+							    $pathImagem = "../../img/slides/" . ($_FILES['img']['name']);
 							    
 
 							    if(is_uploaded_file($_FILES['img']['tmp_name']) || $_FILES['img']['error'] !== UPLOAD_ERR_OK) {
@@ -191,29 +187,24 @@
 							    }							   
 							}
 
-							if($_FILES['img'] == ''){
-								$imagem = 'no-image.png';
-							} else{
-							$imagem = $_FILES['img']['name'];	
-							}	
+							$imagem = $_FILES['img']['name'];
 							$nome = $_POST["nome"];						
-							$telefone = $_POST["telefone"];						
-							$cliente = (isset($_POST["cliente"]) && $_POST["cliente"] == "0" ? "0" : "1");
-							$parceiro = (isset($_POST["parceiro"]) && $_POST["parceiro"] == "0" ? "0" : "1");
+							$link = $_POST["link"];
+							$img = $_FILES["img"];
+							$ativo = (isset($_POST["ativo"]) && $_POST["ativo"] == "on" ? "0" : "1");
 							
 
-							$qry_clipar = "UPDATE clientes_parceiros 
-											  SET nome = '" . $nome . "',										      
-											      telefone = '" . $telefone . "',
+							$qry_slides = "UPDATE banner 
+											  SET nome = '" . $nome . "',
 											      img = '". $imagem ."',
-											      cliente_ativo = " . $cliente . ",
-											      parceiro_ativo = " . $parceiro . "
+											      link = '" . $link . "',
+											      ativo = " . $ativo . "
 											WHERE id = $id";
-							if ($conn->query($qry_clipar) === TRUE) {
+							if ($conn->query($qry_slides) === TRUE) {
 								$conn->commit();
 								echo '{"succeed": true}';
 							} else {
-						        throw new Exception("Erro ao alterar o evento: " . $qry_clipar . "<br>" . $conn->error);
+						        throw new Exception("Erro ao alterar o evento: " . $qry_slides . "<br>" . $conn->error);
 							}
 						}
 					}
@@ -239,18 +230,18 @@
 
 				$id = $_GET['id']; // $_SESSION["fake_id"];
 
-				$qrydel_clipar = "DELETE FROM clientes_parceiros WHERE id = $id";
-				if ($conn->query($qrydel_clipar) === TRUE) {
+				$qrydel_slides = "DELETE FROM banner WHERE id = $id";
+				if ($conn->query($qrydel_slides) === TRUE) {
 				
-					$qrydelclipar = "DELETE FROM clientes_parceiros WHERE id = $id";
-					if ($conn->query($qrydelclipar) === TRUE) {
+					$qrydelslides = "DELETE FROM banner WHERE id = $id";
+					if ($conn->query($qrydelslides) === TRUE) {
 						$conn->commit();
 						echo '{"succeed": true}';
 					} else {
-				        throw new Exception("Erro ao remover cliente ou parceiro: " . $qrydelclipar . "<br>" . $conn->error);
+				        throw new Exception("Erro ao remover o evento: " . $qrydelslides . "<br>" . $conn->error);
 					}
 				} else {
-			        throw new Exception("Erro ao remover cliente ou parceiro: " . $qrydel_clipar . "<br>" . $conn->error);
+			        throw new Exception("Erro ao remover os times do evento: " . $qrydel_slides . "<br>" . $conn->error);
 				}
 			} catch(Exception $e) {
 				$conn->rollback();

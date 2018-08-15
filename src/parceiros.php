@@ -13,7 +13,7 @@
 					  	while($parceiro = $parceiros->fetch_object()) {													
 			?>		
 			<div class="col-sm-3">
-				<button><img src="img/parceiros/<?php echo $parceiro->img; ?>" class="img-thumbnail img-fluid" data-toggle="tooltip" data-placement="top" title="<?php echo $parceiro->telefone; ?>"></button>
+				<button><img src="img/clientes/<?php echo $parceiro->img; ?>" class="img-thumbnail img-fluid" data-toggle="tooltip" data-placement="top" title="<?php echo $parceiro->telefone; ?>"></button>
 				<h3 class="nome-cli-par"><?php echo $parceiro->nome; ?></h3>
 			</div>
 				<?php } ?> 

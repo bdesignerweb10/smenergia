@@ -13,6 +13,7 @@ RewriteRule ^missao/?$ missao.php
 
 RewriteRule ^admin/?$ admin/index.php
 RewriteRule ^admin/home/?$ admin/home.php
+RewriteRule ^admin/slides/?$ admin/slides.php
 RewriteRule ^admin/quem-somos/?$ admin/quem-somos.php
 RewriteRule ^admin/consultores/?$ admin/consultores.php
 RewriteRule ^admin/servicos/?$ admin/servicos.php

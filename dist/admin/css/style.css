@@ -8552,7 +8552,7 @@ body {
 .btn-link {
   cursor: pointer; }
 
-#box-rodada, #box-confirmacao, .mainform, .check-duplicated, .maintemporada, .mainadd, #box-confrontos, #box-times {
+#box-rodada, #box-confirmacao, .mainform, .mainform-palestra, .check-duplicated, .maintemporada, .mainadd, #box-confrontos, #box-times {
   display: none; }
 
 .btn-link:focus, .btn-link:hover {

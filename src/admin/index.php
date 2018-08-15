@@ -20,7 +20,7 @@ require_once('header_login.php');
 					</div>
 					<div class="row">
 			  			<div class="col-12">
-			  				<div class="checkbox">
+			  				<div class="checkbox" style="margin-left: 20px;">
 								<label>
 									<input type="checkbox" id="lembrar" name="lembrar" data-toggle="toggle" data-on="Sim" data-off="Não" data-onstyle="success" data-offstyle="danger">
 									Mantenha-me conectado
